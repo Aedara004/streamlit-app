@@ -37,19 +37,3 @@ st.write("### (4) show three metrics (https://docs.streamlit.io/library/api-refe
 st.write("### (5) use the delta option in the overall profit margin metric to show the difference between the overall average profit margin (all products across all categories)")
 
 
-import streamlit as st
-
-option = st.selectbox(
-    "How would you like to be contacted?",
-    ("Email", "Home phone", "Mobile phone"))
-
-st.write("You selected:", option)
-
-import streamlit as st
-
-options = st.multiselect(
-    "What are your favorite colors",
-    ["Green", "Yellow", "Red", "Blue"],
-    ["Yellow", "Red"])
-
-st.write("You selected:", options)
