@@ -19,7 +19,11 @@ x=df.groupby("Category").sum()
 st.dataframe(x.loc[category])
 
 sub_categories = st.multiselect("Select Sub_Categories", df[df['Category'] == category]['Sub_Category'].unique())
-st.dataframe(x.loc[category][sub_categories])
+
+subcategories = grouped.loc[user_category].index.get_level_values('Subcategory')
+for subcategory in subcategories:
+        st.dataframe(subcategory)
+
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 #st.bar_chart(df.groupby(x.loc[category], as_index=False).sum(), x="Category", y="Sales", color="#04f")
