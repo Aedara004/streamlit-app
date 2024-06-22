@@ -20,7 +20,7 @@ st.dataframe(x.loc[category])
 
 sub_categories = st.multiselect("Select Sub_Categories", df[df['Category'] == category]['Sub_Category'].unique())
 
-subcategories = grouped.loc[user_category].index.get_level_values('Subcategory')
+subcategories = x.loc[category].index.get_level_values('Sub_Category')
 for subcategory in subcategories:
         st.dataframe(subcategory)
 
