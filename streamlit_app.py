@@ -16,13 +16,21 @@ st.bar_chart(df, x="Category", y="Sales")
 #st.dataframe(df.groupby("Category").sum())
 category = st.selectbox("Select a Category", df['Category'].unique())
 x=df.groupby("Category").sum()
-st.dataframe(x.loc[category])
+#st.dataframe(x.loc[category])
 
-grouped = df.groupby(["Category", "Sub_Category"]).sum()
-subcategories = grouped.loc[category].index.get_level_values('Sub_Category')
-for subcategory in subcategories:
-    st.dataframe(subcategory)
+#st.title('Display Subcategories')
 
+# Print the available categories
+available_categories = grouped.index.get_level_values('Category').unique()
+selected_category = st.selectbox('Select a category', available_categories)
+
+# Validate user input and show subcategories
+if selected_category:
+    subcategories = grouped.loc[selected_category].index.get_level_values('Subcategory').unique()
+    st.write(f"Subcategories for Category '{selected_category}':")
+    st.write(subcategories)
+else:
+    st.write("Please select a category.")
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 #st.bar_chart(df.groupby(x.loc[category], as_index=False).sum(), x="Category", y="Sales", color="#04f")
