@@ -18,8 +18,8 @@ category = st.selectbox("Select a Category", df['Category'].unique())
 x=df.groupby("Category").sum()
 st.dataframe(x.loc[category])
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
-st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
-
+#.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
+st.bar_chart(df.groupby(x.loc[category], as_index=False).sum(), x="Category", y="Sales", color="#04f")
 # Aggregating by time
 # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
 df["Order_Date"] = pd.to_datetime(df["Order_Date"])
