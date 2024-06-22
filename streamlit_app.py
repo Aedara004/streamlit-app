@@ -26,7 +26,7 @@ selected_category = st.selectbox('Select a category', available_categories)
 
 # Validate user input and show subcategories
 if selected_category:
-    subcategories = grouped.loc[selected_category].index.get_level_values('Subcategory').unique()
+    subcategories = grouped.loc[selected_category].index.get_level_values('Sub_Category').unique()
     st.write(f"Subcategories for Category '{selected_category}':")
     st.write(subcategories)
 else:
