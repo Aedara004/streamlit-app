@@ -16,7 +16,7 @@ st.bar_chart(df, x="Category", y="Sales")
 #st.dataframe(df.groupby("Category").sum())
 option = st.selectbox()
    "What Category would you like to choose?",
-   (df.groupby("Category").sum(),
+   (df.groupby("Category").sum()),
    index=None,
    placeholder="Select contact method...",
 )
