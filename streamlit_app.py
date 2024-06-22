@@ -19,7 +19,7 @@ x=df.groupby("Category").sum()
 #st.dataframe(x.loc[category])
 
 #st.title('Display Subcategories')
-
+grouped = df.groupby(["Category", "Sub_Category"]).sum()
 # Print the available categories
 available_categories = grouped.index.get_level_values('Category').unique()
 selected_category = st.selectbox('Select a category', available_categories)
