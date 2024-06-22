@@ -20,7 +20,6 @@ st.dataframe(x.loc[category])
 
 grouped = df.groupby(["Category", "Sub_Category"]).sum()
 subcategories = grouped.loc[category].index.get_level_values('Sub_Category')
-print(f"Subcategories for Category '{category}':")
 for subcategory in subcategories:
     st.dataframe(subcategory)
 
