@@ -19,7 +19,7 @@ st.bar_chart(df, x="Category", y="Sales")
 #st.dataframe(x.loc[category])
 
 # Calculate profit and profit margin
-df['Profit'] = df['Sales'] - df['Discount']  # Changed from 'Cost' to 'Discount'
+df['Profit'] = df['Sales'] - df['Discount']  
 df['Profit_Margin'] = (df['Profit'] / df['Sales']) * 100
 
 # Overall average profit margin (all products across all categories)
