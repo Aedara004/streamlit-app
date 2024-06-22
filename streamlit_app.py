@@ -31,6 +31,25 @@ if selected_category:
     st.write(subcategories)
 else:
     st.write("Please select a category.")
+
+
+if selected_category:
+    # Filter subcategories based on selected category
+    subcategories = grouped.loc[selected_category].index.get_level_values('Sub_Category').unique()
+    
+    # Multi-select for subcategories
+    selected_subcategories = st.multiselect('Select subcategories', subcategories)
+    
+    if selected_subcategories:
+        st.write(f"Selected subcategories for Category '{selected_category}':")
+        for subcategory in selected_subcategories:
+            st.write(subcategory)
+    else:
+        st.write("No subcategories selected.")
+else:
+    st.write("Please select a category.")
+
+
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 #st.bar_chart(df.groupby(x.loc[category], as_index=False).sum(), x="Category", y="Sales", color="#04f")
