@@ -19,31 +19,63 @@ st.bar_chart(df, x="Category", y="Sales")
 #st.dataframe(x.loc[category])
 
 #st.title('Display Subcategories')
-grouped = df.groupby(["Category", "Sub_Category"]).sum()
+df['Profit'] = df['Sales'] - df['Discount']  # Changed from 'Cost' to 'Discount'
+df['Profit_Margin'] = (df['Profit'] / df['Sales']) * 100
+
+# Overall average profit margin (all products across all categories)
+overall_avg_profit_margin = df['Profit_Margin'].mean()
+
+# Grouping by "Category" and "Sub_Category", and summing the "Sales", "Profit", and "Profit_Margin" columns
+grouped = df.groupby(["Category", "Sub_Category"]).agg({
+    'Sales': 'sum',
+    'Profit': 'sum',
+    'Profit_Margin': 'mean'  # Average profit margin within each group
+}).reset_index()
+
+# Streamlit app
+st.title('Sales and Profit Analysis')
+
 # Print the available categories
-available_categories = grouped.index.get_level_values('Category').unique()
+available_categories = grouped['Category'].unique()
 selected_category = st.selectbox('Select a category', available_categories)
-
-# Validate user input and show subcategories
-if selected_category:
-    subcategories = grouped.loc[selected_category].index.get_level_values('Sub_Category').unique()
-    st.write(f"Subcategories for Category '{selected_category}':")
-    st.write(subcategories)
-else:
-    st.write("Please select a category.")
-
 
 if selected_category:
     # Filter subcategories based on selected category
-    subcategories = grouped.loc[selected_category].index.get_level_values('Sub_Category').unique()
+    subcategories = grouped[grouped['Category'] == selected_category]['Sub_Category'].unique()
     
     # Multi-select for subcategories
     selected_subcategories = st.multiselect('Select subcategories', subcategories)
     
     if selected_subcategories:
-        st.write(f"Selected subcategories for Category '{selected_category}':")
-        for subcategory in selected_subcategories:
-            st.write(subcategory)
+        st.write(f"Selected subcategories for Category '{selected_category}': {selected_subcategories}")
+        
+        # Filter data for selected subcategories
+        filtered_data = grouped[(grouped['Category'] == selected_category) &
+                                (grouped['Sub_Category'].isin(selected_subcategories))]
+        
+        if not filtered_data.empty:
+            # Plot line chart using Plotly Express for sales
+            fig_sales = px.line(filtered_data, x='Sub_Category', y='Sales', color='Category', 
+                                title=f'Sales for Selected Subcategories in Category {selected_category}')
+            st.plotly_chart(fig_sales)
+            
+            # Calculate metrics for selected subcategories
+            total_sales = filtered_data['Sales'].sum()
+            total_profit = filtered_data['Profit'].sum()
+            overall_profit_margin = filtered_data['Profit_Margin'].mean()
+            
+            # Display metrics using st.metric
+            st.subheader('Metrics for Selected Subcategories')
+            st.metric(label='Total Sales', value=f"${total_sales:,}")
+            st.metric(label='Total Profit', value=f"${total_profit:,}")
+            st.metric(label='Overall Profit Margin (%)', value=f"{overall_profit_margin:.2f}%")
+            
+            # Delta with overall average profit margin
+            delta_profit_margin = overall_avg_profit_margin - overall_profit_margin
+            st.metric(label='Delta Overall Profit Margin (%)', value=f"{delta_profit_margin:.2f}%", delta=delta_profit_margin)
+            
+        else:
+            st.write("No data available for the selected subcategories.")
     else:
         st.write("No subcategories selected.")
 else:
