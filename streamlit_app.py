@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
-import plotly.express as px
 
 st.title("Data App Assignment, on June 20th")
 
@@ -19,7 +18,7 @@ st.bar_chart(df, x="Category", y="Sales")
 #x=df.groupby("Category").sum()
 #st.dataframe(x.loc[category])
 
-#st.title('Display Subcategories')
+# Calculate profit and profit margin
 df['Profit'] = df['Sales'] - df['Discount']  # Changed from 'Cost' to 'Discount'
 df['Profit_Margin'] = (df['Profit'] / df['Sales']) * 100
 
@@ -55,10 +54,11 @@ if selected_category:
                                 (grouped['Sub_Category'].isin(selected_subcategories))]
         
         if not filtered_data.empty:
-            # Plot line chart using Plotly Express for sales
-            fig_sales = px.line(filtered_data, x='Sub_Category', y='Sales', color='Category', 
-                                title=f'Sales for Selected Subcategories in Category {selected_category}')
-            st.plotly_chart(fig_sales)
+            # Line chart for sales using st.line_chart
+            st.subheader(f'Sales for Selected Subcategories in Category {selected_category}')
+            for subcategory in selected_subcategories:
+                subcategory_data = filtered_data[filtered_data['Sub_Category'] == subcategory]
+                st.line_chart(subcategory_data.set_index('Sub_Category')['Sales'])
             
             # Calculate metrics for selected subcategories
             total_sales = filtered_data['Sales'].sum()
@@ -81,8 +81,7 @@ if selected_category:
         st.write("No subcategories selected.")
 else:
     st.write("Please select a category.")
-
-
+    
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 #st.bar_chart(df.groupby(x.loc[category], as_index=False).sum(), x="Category", y="Sales", color="#04f")
