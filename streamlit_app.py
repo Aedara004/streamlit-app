@@ -14,7 +14,7 @@ st.bar_chart(df, x="Category", y="Sales")
 
 # Now let's do the same graph where we do the aggregation first in Pandas... (this results in a chart with solid bars)
 #st.dataframe(df.groupby("Category").sum())
-option = st.selectbox(
+option = st.selectbox()
    "WHat Category would you like to choose?",
    (df.groupby("Category").sum(),
    index=None,
