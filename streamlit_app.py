@@ -58,7 +58,10 @@ if selected_category:
             st.subheader(f'Sales for Selected Subcategories in Category {selected_category}')
             for subcategory in selected_subcategories:
                 subcategory_data = filtered_data[filtered_data['Sub_Category'] == subcategory]
-                st.line_chart(subcategory_data.set_index('Sub_Category')['Sales'])
+                
+                st.line_chart(subcategory_data)
+            
+                #st.line_chart(subcategory_data.set_index('Sub_Category')['Sales'])
             
             # Calculate metrics for selected subcategories
             total_sales = filtered_data['Sales'].sum()
