@@ -16,9 +16,9 @@ st.bar_chart(df, x="Category", y="Sales")
 #st.dataframe(df.groupby("Category").sum())
 option = st.selectbox(
    "What Category would you like to choose?",
-   (df.groupby("Category").sum()),
+   (df.groupby("Category")),
    index=None,
-   placeholder="Select contact method...",
+   placeholder="Select category",
 )
 
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
