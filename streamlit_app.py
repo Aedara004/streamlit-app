@@ -61,7 +61,7 @@ if selected_category:
                 
                 #st.write(subcategory_data.set_index('Sub_Category')['Quantity'])
             
-                st.line_chart(subcategory_data.set_index('Sub_Category')['Quantity'])
+                st.line_chart(subcategory_data.set_index('Sub_Category')['Sales'])
             
             # Calculate metrics for selected subcategories
             total_sales = filtered_data['Sales'].sum()
