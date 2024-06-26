@@ -62,31 +62,35 @@ if selected_category:
                 #st.write(subcategory_data.set_index('Sub_Category')['Quantity'])
             
                
- st.write("### Sales Line Chart")
- sales_chart = filtered_df.groupby('Order_Date')['Sales'].sum().reset_index()
- st.line_chart(sales_chart, x='Order_Date', y='Sales')
-          
-        # Calculate metrics for selected subcategories
-  total_sales = filtered_data['Sales'].sum()
-  total_profit = filtered_data['Profit'].sum()
-  overall_profit_margin = filtered_data['Profit_Margin'].mean()
-         
-        # Display metrics using st.metric
-            st.subheader('Metrics for Selected Subcategories')
-            st.metric(label='Total Sales', value=f"${total_sales:,}")
-            st.metric(label='Total Profit', value=f"${total_profit:,}")
-            st.metric(label='Overall Profit Margin (%)', value=f"{overall_profit_margin:.2f}%")
-            
-            # Delta with overall average profit margin
-            delta_profit_margin = overall_avg_profit_margin - overall_profit_margin
-            st.metric(label='Delta Overall Profit Margin (%)', value=f"{delta_profit_margin:.2f}%", delta=delta_profit_margin)
-            
-        else:
-            st.write("No data available for the selected subcategories.")
-    else:
-        st.write("No subcategories selected.")
-else:
-    st.write("Please select a category.")
+st.write("### Sales Line Chart")
+sales_chart = filtered_df.groupby('Order_Date')['Sales'].sum().reset_index()
+st.line_chart(sales_chart, x='Order_Date', y='Sales')
+
+# Calculate metrics for selected subcategories
+if filtered_data is not None:  # Check if filtered data exists
+    total_sales = filtered_data['Sales'].sum()
+    total_profit = filtered_data['Profit'].sum()
+    overall_profit_margin = filtered_data['Profit_Margin'].mean()
+
+    # Display metrics using st.metric
+    st.subheader('Metrics for Selected Subcategories')
+    st.metric(label='Total Sales', value=f"${total_sales:,}")
+    st.metric(label='Total Profit', value=f"${total_profit:,}")
+    st.metric(label='Overall Profit Margin (%)', value=f"{overall_profit_margin:.2f}%")
+
+    # Delta with overall average profit margin
+    delta_profit_margin = overall_avg_profit_margin - overall_profit_margin
+    st.metric(label='Delta Overall Profit Margin (%)', value=f"{delta_profit_margin:.2f}%", delta=delta_profit_margin)
+
+else:  # Handle case where filtered data is None
+    st.write("No data available for the selected subcategories.")
+
+else:  # This else block seems unnecessary based on the logic. Remove it.
+#  st.write("No subcategories selected.")  # Remove this line
+
+else:  # This else block seems unnecessary based on the logic. Remove it.
+#  st.write("Please select a category.")  # Remove this line
+
     
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
