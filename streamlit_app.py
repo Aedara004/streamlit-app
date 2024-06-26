@@ -69,9 +69,9 @@ if selected_category:
 
 
            # Calculate metrics for selected subcategories
-            total_sales = filtered_data['Sales'].sum()
-            total_profit = filtered_data['Profit'].sum()
-            overall_profit_margin = filtered_data['Profit_Margin'].mean()
+    total_sales = filtered_data['Sales'].sum()
+    total_profit = filtered_data['Profit'].sum()
+    overall_profit_margin = filtered_data['Profit_Margin'].mean()
             
             # Display metrics using st.metric
             st.subheader('Metrics for Selected Subcategories')
