@@ -61,9 +61,14 @@ if selected_category:
                 
                 #st.write(subcategory_data.set_index('Sub_Category')['Quantity'])
             
-                st.line_chart(subcategory_data.set_index('Sub_Category')['Sales'])
-            
-            # Calculate metrics for selected subcategories
+               
+    st.write("### Sales Line Chart")
+    sales_chart = filtered_df.groupby('Order_Date')['Sales'].sum().reset_index()
+    st.line_chart(sales_chart, x='Order_Date', y='Sales')
+
+
+
+           # Calculate metrics for selected subcategories
             total_sales = filtered_data['Sales'].sum()
             total_profit = filtered_data['Profit'].sum()
             overall_profit_margin = filtered_data['Profit_Margin'].mean()
