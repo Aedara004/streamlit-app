@@ -85,12 +85,6 @@ if filtered_data is not None:  # Check if filtered data exists
 else:  # Handle case where filtered data is None
     st.write("No data available for the selected subcategories.")
 
-else:  # This else block seems unnecessary based on the logic. Remove it.
-#  st.write("No subcategories selected.")  # Remove this line
-
-else:  # This else block seems unnecessary based on the logic. Remove it.
-#  st.write("Please select a category.")  # Remove this line
-
     
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
