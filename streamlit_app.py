@@ -76,6 +76,7 @@ if selected_category:
 
                 #st.write(subcategory_data.set_index('Sub_Category')['Quantity'])
                 st.write("### (3) show a line chart of sales for the selected items in (2)")
+                filtered_df = df[(df['Category'] == category) & (df['Sub_Category'].isin(subcategory_data))]
 
                 #st.line_chart(subcategory_data.set_index('Sub_Category')['Sales'])
                 sales_chart = filtered_df.groupby('Order_Date')['Sales'].sum().reset_index()
