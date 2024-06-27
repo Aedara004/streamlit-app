@@ -18,7 +18,6 @@ st.bar_chart(df, x="Category", y="Sales")
 #x=df.groupby("Category").sum()
 #st.dataframe(x.loc[category])
 st.write("## Your additions")
-st.write("### (1) add a drop down for Category (https://docs.streamlit.io/library/api-reference/widgets/st.selectbox)")
 
 # Calculate profit and profit margin
 df['Profit'] = df['Sales'] - df['Discount']
@@ -43,12 +42,14 @@ selected_category = st.selectbox('Select a category', available_categories)
 
 if selected_category:
     # Filter subcategories based on selected category
+    st.write("### (1) add a drop down for Category (https://docs.streamlit.io/library/api-reference/widgets/st.selectbox)")
+
     subcategories = grouped[grouped['Category'] == selected_category]['Sub_Category'].unique()
 
     # Multi-select for subcategories
-    selected_subcategories = st.multiselect('Select subcategories', subcategories)
     st.write("### (2) add a multi-select for Sub_Category *in the selected Category (1)* (https://docs.streamlit.io/library/api-reference/widgets/st.multiselect)")
-
+    selected_subcategories = st.multiselect('Select subcategories', subcategories)
+    
     if selected_subcategories:
         st.write(f"Selected subcategories for Category '{selected_category}': {selected_subcategories}")
 
