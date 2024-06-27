@@ -37,13 +37,13 @@ grouped = df.groupby(["Category", "Sub_Category"]).agg({
 st.title('Sales and Profit Analysis')
 
 # Print the available categories
+st.write("### (1) add a drop down for Category (https://docs.streamlit.io/library/api-reference/widgets/st.selectbox)")
 available_categories = grouped['Category'].unique()
 selected_category = st.selectbox('Select a category', available_categories)
 
 if selected_category:
     # Filter subcategories based on selected category
-    st.write("### (1) add a drop down for Category (https://docs.streamlit.io/library/api-reference/widgets/st.selectbox)")
-
+   
     subcategories = grouped[grouped['Category'] == selected_category]['Sub_Category'].unique()
 
     # Multi-select for subcategories
