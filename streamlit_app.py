@@ -21,12 +21,11 @@ df["Order_Date"] = pd.to_datetime(df["Order_Date"])
 df.set_index('Order_Date', inplace=True)
 # Here the Grouper is using our newly set index to group by Month ('M')
 sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
-st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 st.dataframe(sales_by_month)
 
 # Here the grouped months are the index and automatically used for the x axis
 st.line_chart(sales_by_month, y="Sales")
-
+st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 st.write("## Your additions")
 
 # Calculate profit and profit margin
@@ -53,7 +52,6 @@ selected_category = st.selectbox('Select a category', available_categories)
 
 if selected_category:
     # Filter subcategories based on selected category
-   
     subcategories = grouped[grouped['Category'] == selected_category]['Sub_Category'].unique()
 
     # Multi-select for subcategories
@@ -64,17 +62,23 @@ if selected_category:
         st.write(f"Selected subcategories for Category '{selected_category}': {selected_subcategories}")
 
         # Filter data for selected subcategories
-        filtered_data = grouped[(grouped['Category'] == selected_category) &
-                                (grouped['Sub_Category'].isin(selected_subcategories))]
+        filtered_data = df[(df['Category'] == selected_category) &
+                           (df['Sub_Category'].isin(selected_subcategories))]
 
         if not filtered_data.empty:
-            # Bar chart for sales using st.bar_chart
+            # Aggregate sales data by month for each subcategory
+            filtered_data['Order_Date'] = pd.to_datetime(filtered_data['Order_Date'])
+            filtered_data.set_index('Order_Date', inplace=True)
+            sales_by_month_and_subcategory = filtered_data.groupby([pd.Grouper(freq='M'), 'Sub_Category']).agg({
+                'Sales': 'sum'
+            }).reset_index()
+
             st.subheader(f'Sales for Selected Subcategories in Category {selected_category}')
             for subcategory in selected_subcategories:
-                subcategory_data = filtered_data[filtered_data['Sub_Category'] == subcategory]
+                subcategory_data = sales_by_month_and_subcategory[sales_by_month_and_subcategory['Sub_Category'] == subcategory]
 
-                st.write("### (3) show a bar chart of sales for the selected items in (2)")
-                st.bar_chart(subcategory_data.set_index('Sub_Category')['Sales'])
+                st.write(f"### (3) show a line chart of sales for {subcategory}")
+                st.line_chart(subcategory_data.set_index('Order_Date')['Sales'], use_container_width=True)
 
             # Calculate metrics for selected subcategories
             total_sales = filtered_data['Sales'].sum()
@@ -83,7 +87,6 @@ if selected_category:
 
             # Display metrics using st.metric
             st.write("### (4) show three metrics (https://docs.streamlit.io/library/api-reference/data/st.metric) for the selected items in (2): total sales, total profit, and overall profit margin (%)")
-
             st.subheader('Metrics for Selected Subcategories')
             st.metric(label='Total Sales', value=f"${total_sales:,}")
             st.metric(label='Total Profit', value=f"${total_profit:,}")
@@ -101,12 +104,4 @@ if selected_category:
 else:
     st.write("Please select a category.")
 
-# Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
-
-#st.bar_chart(df.groupby(x.loc[category], as_index=False).sum(), x="Category", y="Sales", color="#04f")
-# Aggregating by time
-# Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
-#df["Order_Date"] = pd.to_datetime(df["Order_Date"])
-#df.set_index('Order_Date', inplace=True)
-# Here the Grouper is using our newly set index to group by Month ('M')
-#sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
+# Using as_index=False here preserves the Category as a column.  If we exclude that, Category would beco
