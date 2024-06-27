@@ -107,9 +107,9 @@ st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sale
 #st.bar_chart(df.groupby(x.loc[category], as_index=False).sum(), x="Category", y="Sales", color="#04f")
 # Aggregating by time
 # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
-df["Order_Date"] = pd.to_datetime(df["Order_Date"])
-df.set_index('Order_Date', inplace=True)
+#df["Order_Date"] = pd.to_datetime(df["Order_Date"])
+#df.set_index('Order_Date', inplace=True)
 # Here the Grouper is using our newly set index to group by Month ('M')
-sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
+#sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
 st.write("### (5) use the delta option in the overall profit margin metric to show the difference between the overall average profit margin (all products across all categories)")
 
