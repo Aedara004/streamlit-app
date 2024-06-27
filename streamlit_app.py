@@ -63,12 +63,10 @@ if selected_category:
 
         # Filter data for selected subcategories
         filtered_data = df[(df['Category'] == selected_category) &
-                           (df['Sub_Category'].isin(selected_subcategories))]
+                           (df['Sub_Category'].isin(selected_subcategories))].copy()
 
         if not filtered_data.empty:
             # Aggregate sales data by month for each subcategory
-            filtered_data['Order_Date'] = pd.to_datetime(filtered_data['Order_Date'])
-            filtered_data.set_index('Order_Date', inplace=True)
             sales_by_month_and_subcategory = filtered_data.groupby([pd.Grouper(freq='M'), 'Sub_Category']).agg({
                 'Sales': 'sum'
             }).reset_index()
@@ -104,4 +102,4 @@ if selected_category:
 else:
     st.write("Please select a category.")
 
-# Using as_index=False here preserves the Category as a column.  If we exclude that, Category would beco
+# Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the dataframe index and we would need to use x=None to tell bar_chart to use the index
