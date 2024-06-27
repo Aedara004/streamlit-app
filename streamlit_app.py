@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 import math
 
 st.title("Data App Assignment, on June 20th")
@@ -22,7 +21,7 @@ df["Order_Date"] = pd.to_datetime(df["Order_Date"])
 df.set_index('Order_Date', inplace=True)
 # Here the Grouper is using our newly set index to group by Month ('M')
 sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
-
+st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 st.dataframe(sales_by_month)
 
 # Here the grouped months are the index and automatically used for the x axis
@@ -69,18 +68,13 @@ if selected_category:
                                 (grouped['Sub_Category'].isin(selected_subcategories))]
 
         if not filtered_data.empty:
-            # Line chart for sales using st.line_chart
+            # Bar chart for sales using st.bar_chart
             st.subheader(f'Sales for Selected Subcategories in Category {selected_category}')
             for subcategory in selected_subcategories:
                 subcategory_data = filtered_data[filtered_data['Sub_Category'] == subcategory]
 
-                #st.write(subcategory_data.set_index('Sub_Category')['Quantity'])
-                st.write("### (3) show a line chart of sales for the selected items in (2)")
-                filtered_df = df[(df['Category'] == selected_category) & (df['Sub_Category'].isin(subcategory_data))]
-
-                #st.line_chart(subcategory_data.set_index('Sub_Category')['Sales'])
-                sales_chart = filtered_df.groupby('Order_Date')['Sales'].sum().reset_index()
-                st.line_chart(sales_chart, x='Order_Date', y='Sales')
+                st.write("### (3) show a bar chart of sales for the selected items in (2)")
+                st.bar_chart(subcategory_data.set_index('Sub_Category')['Sales'])
 
             # Calculate metrics for selected subcategories
             total_sales = filtered_data['Sales'].sum()
@@ -93,7 +87,6 @@ if selected_category:
             st.subheader('Metrics for Selected Subcategories')
             st.metric(label='Total Sales', value=f"${total_sales:,}")
             st.metric(label='Total Profit', value=f"${total_profit:,}")
-            st.write("### (5) use the delta option in the overall profit margin metric to show the difference between the overall average profit margin (all products across all categories)")
             st.metric(label='Overall Profit Margin (%)', value=f"{overall_profit_margin:.2f}%")
 
             # Delta with overall average profit margin
@@ -109,7 +102,6 @@ else:
 
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 
-st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 #st.bar_chart(df.groupby(x.loc[category], as_index=False).sum(), x="Category", y="Sales", color="#04f")
 # Aggregating by time
 # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
