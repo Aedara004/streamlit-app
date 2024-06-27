@@ -17,7 +17,15 @@ st.bar_chart(df, x="Category", y="Sales")
 #category = st.selectbox("Select a Category", df['Category'].unique())
 #x=df.groupby("Category").sum()
 #st.dataframe(x.loc[category])
+df["Order_Date"] = pd.to_datetime(df["Order_Date"])
+df.set_index('Order_Date', inplace=True)
+# Here the Grouper is using our newly set index to group by Month ('M')
+sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
 
+st.dataframe(sales_by_month)
+
+# Here the grouped months are the index and automatically used for the x axis
+st.line_chart(sales_by_month, y="Sales")
 
 st.write("## Your additions")
 
