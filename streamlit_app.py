@@ -1,30 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import math
-
-st.title("Data App Assignment, on June 20th")
-
-st.write("### Input Data and Examples")
-df = pd.read_csv("Superstore_Sales_utf8.csv", parse_dates=True)
-st.dataframe(df)
-
-# This bar chart will not have solid bars--but linexs--because the detail data is being graphed independently
-st.bar_chart(df, x="Category", y="Sales")
-
-# Now let's do the same graph where we do the aggregation first in Pandas... (this results in a chart with solid bars)
-#st.dataframe(df.groupby("Category").sum())
-#category = st.selectbox("Select a Category", df['Category'].unique())
-#x=df.groupby("Category").sum()
-#st.dataframe(x.loc[category])
-
-# Calculate profit and profit margin
-df['Profit'] = df['Sales'] - df['Discount']
-df['Profit_Margin'] = (df['Profit'] / df['Sales']) * 100
-
-# Overall average profit margin (all products across all categories)
-overall_avg_profit_margin = df['Profit_Marimport streamlit as st
-import pandas as pd
 import numpy as np
 
 st.title("Data App Assignment, on June 20th")
@@ -104,10 +79,3 @@ if selected_sub_categories:
 # Display selected options
 st.write(f"Selected Category: {category}")
 st.write(f"Selected Sub-Categories: {selected_sub_categories}")
-
-st.write("## Your additions")
-st.write("### (1) add a drop down for Category (https://docs.streamlit.io/library/api-reference/widgets/st.selectbox)")
-st.write("### (2) add a multi-select for Sub_Category *in the selected Category (1)* (https://docs.streamlit.io/library/api-reference/widgets/st.multiselect)")
-st.write("### (3) show a line chart of sales for the selected items in (2)")
-st.write("### (4) show three metrics (https://docs.streamlit.io/library/api-reference/data/st.metric) for the selected items in (2): total sales, total profit, and overall profit margin (%)")
-st.write("### (5) use the delta option in the overall profit margin metric to show the difference between the overall average profit margin (all products across all categories)")
