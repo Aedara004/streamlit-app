@@ -84,9 +84,12 @@ if selected_category:
             overall_profit_margin = filtered_data['Profit_Margin'].mean()
 
             # Display metrics using st.metric
+            st.write("### (4) show three metrics (https://docs.streamlit.io/library/api-reference/data/st.metric) for the selected items in (2): total sales, total profit, and overall profit margin (%)")
+
             st.subheader('Metrics for Selected Subcategories')
             st.metric(label='Total Sales', value=f"${total_sales:,}")
             st.metric(label='Total Profit', value=f"${total_profit:,}")
+            st.write("### (5) use the delta option in the overall profit margin metric to show the difference between the overall average profit margin (all products across all categories)")
             st.metric(label='Overall Profit Margin (%)', value=f"{overall_profit_margin:.2f}%")
 
             # Delta with overall average profit margin
@@ -101,7 +104,6 @@ else:
     st.write("Please select a category.")
 
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
-st.write("### (4) show three metrics (https://docs.streamlit.io/library/api-reference/data/st.metric) for the selected items in (2): total sales, total profit, and overall profit margin (%)")
 
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 #st.bar_chart(df.groupby(x.loc[category], as_index=False).sum(), x="Category", y="Sales", color="#04f")
@@ -111,5 +113,3 @@ st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sale
 #df.set_index('Order_Date', inplace=True)
 # Here the Grouper is using our newly set index to group by Month ('M')
 #sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
-st.write("### (5) use the delta option in the overall profit margin metric to show the difference between the overall average profit margin (all products across all categories)")
-
