@@ -76,7 +76,9 @@ if selected_category:
                 #st.write(subcategory_data.set_index('Sub_Category')['Quantity'])
                 st.write("### (3) show a line chart of sales for the selected items in (2)")
 
-                st.line_chart(subcategory_data.set_index('Sub_Category')['Sales'])
+                #st.line_chart(subcategory_data.set_index('Sub_Category')['Sales'])
+                sales_chart = filtered_df.groupby('Order_Date')['Sales'].sum().reset_index()
+                st.line_chart(sales_chart, x='Order_Date', y='Sales')
 
             # Calculate metrics for selected subcategories
             total_sales = filtered_data['Sales'].sum()
