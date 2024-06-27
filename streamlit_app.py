@@ -17,6 +17,11 @@ st.bar_chart(df, x="Category", y="Sales")
 #category = st.selectbox("Select a Category", df['Category'].unique())
 #x=df.groupby("Category").sum()
 #st.dataframe(x.loc[category])
+st.dataframe(sales_by_month)
+
+# Here the grouped months are the index and automatically used for the x axis
+st.line_chart(sales_by_month, y="Sales")
+
 st.write("## Your additions")
 
 # Calculate profit and profit margin
@@ -103,9 +108,5 @@ df.set_index('Order_Date', inplace=True)
 sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
 st.write("### (5) use the delta option in the overall profit margin metric to show the difference between the overall average profit margin (all products across all categories)")
 
-st.dataframe(sales_by_month)
-
-# Here the grouped months are the index and automatically used for the x axis
-st.line_chart(sales_by_month, y="Sales")
 
 
