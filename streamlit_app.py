@@ -90,8 +90,8 @@ if selected_category:
             st.metric(label='Overall Profit Margin (%)', value=f"{overall_profit_margin:.2f}%")
 
             # Delta with overall average profit margin
-            delta_profit_margin = overall_avg_profit_margin - overall_profit_margin
-            st.metric(label='Delta Overall Profit Margin (%)', value=f"{delta_profit_margin:.2f}%", delta=delta_profit_margin)
+            delta_profit_margin = overall_profit_margin - overall_avg_profit_margin
+            st.metric(label='Delta Overall Profit Margin (%)', value=f"{overall_profit_margin:.2f}%", delta=f"{delta_profit_margin:.2f}%")
 
         else:
             st.write("No data available for the selected subcategories.")
