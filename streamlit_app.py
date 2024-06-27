@@ -91,6 +91,7 @@ if selected_category:
 
             # Delta with overall average profit margin
             delta_profit_margin = overall_profit_margin - overall_avg_profit_margin
+            st.write("### (5) use the delta option in the overall profit margin metric to show the difference between the overall average profit margin (all products across all categories)")
             st.metric(label='Delta Overall Profit Margin (%)', value=f"{overall_profit_margin:.2f}%", delta=f"{delta_profit_margin:.2f}%")
 
         else:
